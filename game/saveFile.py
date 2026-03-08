@@ -1,6 +1,6 @@
 from json import dump, load
 
-from game.pathHelp import resourcePath
+from game.pathHelp import resourcePath, savePath
 from game.petReg import petReg_load
 from game.pets import catPet
 
@@ -31,13 +31,13 @@ class saveFile:
             "inventory": self.inventory
         }
 
-        with open(resourcePath("resources/saves/" + where + ".save"), "w") as f:
+        with open(savePath(where), "w") as f:
             dump(saveData, f, indent=4)
 
     def load(self, where):
 
         try:
-            with open(resourcePath("resources/saves/" + where + ".save"), "r") as f:
+            with open(savePath(where), "r") as f:
                 saveData = load(f)
 
         except FileNotFoundError:
@@ -49,6 +49,7 @@ class saveFile:
         self.specialMoney = saveData["specialMoney"]
         self.gifts = saveData["gifts"]
 
+        self.pets = []
         for pet in saveData["pets"]:
             self.pets.append(petReg_load(pet))
 
@@ -56,8 +57,7 @@ class saveFile:
 
     def checkAnyNeeds(self):
         for index, pet in enumerate(self.pets):
-            if pet.getFoodNeed() or pet.getWaterNeed() or pet.getFoodNeed():
+            if pet.getFoodNeed() or pet.getWaterNeed() or pet.getFunNeed():
                 return index, True
 
         return 0, False
-

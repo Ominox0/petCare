@@ -8,7 +8,7 @@ from game.pets import catPet
 class saveFile:
     def __init__(self):
         self.money = 100
-        self.specialMoney = 1000
+        self.specialMoney = 0
 
         self.gifts = 0
 
@@ -60,3 +60,4 @@ class saveFile:
                 return index, True
 
         return 0, False
+
